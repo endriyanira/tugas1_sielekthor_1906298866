@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <title>Sielekthor</title>
+  <meta charset="UTF-8">
+  <title> Home </title>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar('')"></nav>
+<div class="container">
+  <div class="row justify-content-md-center" >
+    <h3 style="padding:30px">Daftar Barang</h3>
+  </div>
+  <div class="row justify-content-start" style="padding:10px">
+    <a class="btn btn-warning font-weight-bold" style="border-radius: 10px;" href="/barang/tambah">+ Tambah Barang</a>
+  </div>
+  <div class="row justify-content-start" style="padding-left:10px">
+    <table class="table table-striped">
+      <thead class="bg-warning text-center" style="padding:15px">
+      <th>No.</th>
+      <th>Nama</th>
+      <th>Harga</th>
+      <th>Tipe</th>
+      <th>Stok</th>
+      <th>Aksi</th>
+      </thead>
+      <tbody>
+      <tr th:each="barang, item: ${listBarang}">
+        <td th:text="${item.count}" class="text-center"></td>
+        <td th:text="${barang.namaBarang}" class="text-center"></td>
+        <td th:text="${barang.hargaBarang}" class="text-center"></td>
+        <td th:text="${barang.tipe.namaTipe}" class="text-center"></td>
+        <td th:text="${barang.stokBarang}" class="text-center"></td>
+        <td class="text-center">
+          <a class="btn btn-sm btn-info font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/} + ${barang.id}">Lihat</a>
+          <a class="btn btn-sm btn-warning font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/ubah/} + ${barang.id}">Ubah</a>
+<!--          <a class="btn btn-sm btn-warning font-weight-bold text-dark" style="border-radius:5px;"  th:href="@{/barang/ubah/} + ${barang.id}">Ubah</a>-->
+          <a class="btn btn-sm btn-danger font-weight-bold text-dark" style="border-radius:5px;" href="/">Hapus</a>
+
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>

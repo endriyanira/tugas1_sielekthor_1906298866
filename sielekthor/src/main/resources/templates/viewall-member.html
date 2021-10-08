@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <title>Sielekthor</title>
+    <meta charset="UTF-8">
+    <title> Home </title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar('')"></nav>
+<div class="container">
+    <div class="row justify-content-md-center" >
+        <h3 style="padding:30px">Daftar Member</h3>
+    </div>
+    <div class="row justify-content-start" style="padding:10px">
+        <a class="btn btn-warning font-weight-bold" style="border-radius: 10px;" href="/member/tambah">+ Tambah Member</a>
+    </div>
+    <div class="row justify-content-start" style="padding-left:10px">
+        <table class="table table-striped">
+            <thead class="bg-warning text-center" style="padding:15px">
+            <th>No.</th>
+            <th>Nama</th>
+            <th>Tanggal Lahir</th>
+            <th>Tanggal Pendaftaran</th>
+            <th>Jenis Kelamin</th>
+            <th></th>
+            </thead>
+            <tbody>
+            <tr th:each="member, item: ${listMember}">
+                <td th:text="${item.count}" class="text-center"></td>
+                <td th:text="${member.namaMember}" class="text-center"></td>
+                <td th:text="${member.tanggalLahir}" class="text-center"></td>
+                <td th:text="${member.tanggalPendaftaran}" class="text-center"></td>
+                <td class="text-center" th:if="${member.jenisKelamin} == 1">Laki-Laki</td>
+                <td class="text-center" th:if="${member.jenisKelamin} == 0">Perempuan</td>
+                <td class="text-center">
+                    <a class="btn btn-sm btn-info font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/member/ubah/} + ${member.id}">Update</a>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

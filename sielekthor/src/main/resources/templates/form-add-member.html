@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <title>Sielekthor</title>
+    <meta charset="UTF-8">
+    <title> Home </title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar('')"></nav>
+<div class="container">
+    <div class="card m-4 p-4 border-0">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h2 class="text-center">Form Tambah Member</h2>
+                <br>
+                <div>
+                    <form th:action="@{/member/tambah}" th:object="${member}" method="POST">
+                        <div class="card border-bottom border-0">
+                            Nama <br>
+                            <input required th:field="*{namaMember}" class="form-control" style="border-radius: 10px" type="text" name="namaMember"/>
+                            <br>
+
+                            Tanggal Lahir <br>
+                            <input required class="form-control" style="border-radius: 10px" type="date" data-date-format="DD-MM-YYYY" name="tanggalLahir"/>
+                            <br>
+
+                            Tanggal Pendaftaran <br>
+                            <input required class="form-control" style="border-radius: 10px"  type="datetime-local" data-date-format="DD-MM-YYYY HH:mm:ss" name="tanggalPendaftaran"/>
+                            <br>
+                            <br>
+
+                            Jenis Kelamin : <br>
+                            <div class="radio">
+                                <label><input value = "0" type="radio" name="jenisKelamin" checked>Perempuan</label>
+                            </div>
+                            <div class="radio">
+                                <label><input value = "1" type="radio" name="jenisKelamin" checked>Laki-Laki</label>
+                            </div>
+                            <br>
+                            <div class="card border-bottom" style="margin-bottom:20px;">
+
+                            </div>
+                        </div>
+                        <button name="submit" class="btn btn-outline-warning" href = "/member">Batal</button>
+                        <button name="submit" class="btn btn-warning" type="submit">Simpan</button>
+                    </form>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

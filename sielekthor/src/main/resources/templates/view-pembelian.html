@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <title>Sielekthor</title>
+    <meta charset="UTF-8">
+    <title> Home </title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar('')"></nav>
+<div class="container" style="padding:30px">
+    <div class="card border-0 shadow-sm mb-5 rounded" >
+        <h3 class="card-header bg-warning border-0 text-center">Detail Pembelian</h3>
+        <div class="card-body">
+            <p th:text="'No Invoice         : ' + ${pembelian.noInvoice}"></p>
+            <p th:text="'Total Harga        : Rp' + ${pembelian.total}"></p>
+            <p th:text="'Member             : ' + ${pembelian.member}"></p>
+            <p th:text="'Jumlah Barang      : ' + ${pembelian.member}"></p>
+            <p th:text="'Tanggal Pembelian  : ' + ${pembelian.tanggalPembelian}"></p>
+            <p th:text="'Nama Admin         : ' + ${pembelian.namaAdmin}"></p>
+            <p th:if="${pembelian.isCash == true}">Metode Pembayaran : Tunai</p>
+            <p th:if="${pembelian.isCash == false}">Metode Pembayaran : Cicilan</p>
+        </div>
+    </div>
+    <div class="card border-0">
+        <div class="row justify-content" style="padding-left:20px">
+            <a class="btn btn-outline-warning text-warning" href="/barang">Kembali</a>
+        </div>
+    </div>
+
+    <div class="row justify-content-md-center" >
+        <h3 style="padding:30px">Daftar Barang</h3>
+    </div>
+    <div class="row justify-content-start" style="padding-left:10px">
+        <table class="table table-striped">
+            <thead class="bg-warning text-center" style="padding:15px">
+            <th>No.</th>
+            <th>Merek</th>
+            <th>Tipe</th>
+            <th>Tanggal Garansi</th>
+            <th>Harga</th>
+            <th>Qty</th>
+            <th>Total</th>
+            </thead>
+            <tbody>
+            <tr th:each="pb, item: ${listPembelianBarang}">
+                <td th:text="${item.count}" class="text-center"></td>
+                <td th:text="${pb.barang.namaBarang}" class="text-center"></td>
+                <td th:text="${pb.barang.merkBarang}" class="text-center"></td>
+                <td th:text="${pb.barang.tipeBarang}" class="text-center"></td>
+                <td th:text="${pb.tanggalGaransi}" class="text-center"></td>
+                <td th:text="${pb.barang.hargaBarang}" class="text-center"></td>
+                <td th:text="${pb.barang.hargaBarang}" class="text-center"></td>
+                <td th:text="${pb.barang.hargaBarang}" class="text-center"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>
