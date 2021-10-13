@@ -10,8 +10,16 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.lang.reflect.Member;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,5 +52,16 @@ public class PembelianBarangServiceImpl implements PembelianBarangService {
             return pembelianBarang.get();
         }
         return null;
+    }
+
+    @Override
+    public Date getTanggalGaransi(PembelianBarangModel pb) {
+        Timestamp timestamp = new Timestamp(new java.util.Date().getTime());
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp.getTime());
+        cal.add(Calendar.DAY_OF_MONTH, pb.getBarang().getJumlahGaransi());
+        timestamp = new Timestamp(cal.getTime().getTime());
+        java.sql.Date dt = java.sql.Date.valueOf(timestamp.toLocalDateTime().toLocalDate());
+        return dt;
     }
 }

@@ -8,6 +8,7 @@ import apap.tugas.sielekthor.service.MemberService;
 import apap.tugas.sielekthor.service.PembelianService;
 import apap.tugas.sielekthor.service.BarangService;
 import apap.tugas.sielekthor.service.PembelianBarangService;
+import org.apache.tomcat.websocket.PerMessageDeflate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -36,9 +40,27 @@ public class PembelianController {
     private BarangService barangService;
 
     @GetMapping("/pembelian")
-    public String listPembelian(Model model){
-        model.addAttribute(model);
+    public String listPembelian(
+            @ModelAttribute PembelianModel pembelian,
+            Model model){
+
+
+        // kirim listPembelian (panjangnya) setiap member ke viewall-pembelian
         model.addAttribute("listPembelian", pembelianService.getPembelianList());
+
+        List<Integer> listTotalJumlah = new ArrayList<>();
+        //for loop isi listPembelian Service
+        for (PembelianModel p : pembelianService.getPembelianList()){
+            Integer totalJumlahPerPembelian = pembelianService.getJumlahTotal(p);
+                listTotalJumlah.add(totalJumlahPerPembelian);
+        }
+        System.out.println(listTotalJumlah);
+
+        DateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
+        String dateString = dateFormat.format(new Date());
+        model.addAttribute("myDate", dateString);
+        model.addAttribute("listTotalJumlah", listTotalJumlah);
+
         return "viewall-pembelian";
     }
     @GetMapping("pembelian/{idPembelian}")
@@ -47,63 +69,91 @@ public class PembelianController {
             Model model) {
 
         PembelianModel pembelian = pembelianService.getPembelianByIdPembelian(idPembelian);
+        List<PembelianBarangModel> listPembelianBarang = pembelian.getListPembelianBarang();
+        Integer totalJumlahPerPembelian = pembelianService.getJumlahTotal(pembelian);
+        model.addAttribute("listPembelianBarang",listPembelianBarang);
         model.addAttribute("pembelian", pembelian);
+        model.addAttribute("jumlahBarang", totalJumlahPerPembelian);
         return "view-pembelian";
     }
 
-    @GetMapping("pembelian/tambah")
-    public String addPembelianForm(Model model){
-        PembelianBarangModel pembelianbarang = new PembelianBarangModel();
-        PembelianModel pembelian = new PembelianModel();
-
-
-        // Admin fieldnya ada di pembelianModel yang harus diisi
-        model.addAttribute("pembelian", pembelian);
-        model.addAttribute("pembelianbarang", pembelianbarang);
-
-        // Pembeli ambil list member
-        List<MemberModel> listMember = memberService.getMemberList();
-        model.addAttribute("listMemberService", listMember); //Ini untuk dropdown form tambah pembelian
-
-        // is Cash ada di pembelianModel (ngirim model pembelian)
-        //Barang
-        return "form-add-pembelian";
-    }
-
-    @PostMapping(value="/pembelian/tambah", params = {"tambahRow"})
-    public String addRow(
-        @ModelAttribute PembelianModel pembelian,
-        @ModelAttribute PembelianBarangModel pembelianBarang,
+    @GetMapping("pembelian/hapus/{idPembelian}")
+    public String hapusPembelian(
+        @PathVariable Long idPembelian,
         Model model
     ){
-        if(pembelian.getListPembelianBarang()==null){
-            pembelian.setListPembelianBarang(new ArrayList<PembelianBarangModel>());
+        //Get Pembelian Model by IdPembelian
+        PembelianModel pembelian = pembelianService.getPembelianByIdPembelian(idPembelian);
+
+        //GetListPembelianBarang
+        List<PembelianBarangModel>  listPembelianBarang = pembelian.getListPembelianBarang();
+
+        //Get NomorInvoice
+        String nomorInvoice = pembelian.getNoInvoice();
+
+        for(PembelianBarangModel pb : listPembelianBarang){
+            //update jumlah barang setelah pembelian di hapus
+            pb.getBarang().setStokBarang(pb.getQuantity()+pb.getBarang().getStokBarang());
+            barangService.updateBarang(pb.getBarang());
         }
-        List<PembelianBarangModel> listPembelianBarang = pembelianBarangService.getPembelianBarangList();
-        pembelian.getListPembelianBarang().add(new PembelianBarangModel());
 
-        model.addAttribute("pembelian", pembelian);
-        model.addAttribute("listBarangService", barangService.getBarangList());
-        model.addAttribute("listPembelianBarangService", listPembelianBarang);
-        model.addAttribute("pembelianBarang", pembelianBarang);
+        //Temp List
+        List<PembelianBarangModel> listPembelianBarangUpdate = pembelian.getListPembelianBarang();
+        pembelianService.deletePembelian(idPembelian);
 
-        return "form-add-pembelian";
+        model.addAttribute("listPembelianBarangUpdate", listPembelianBarangUpdate);
+        model.addAttribute("noInvoice", nomorInvoice);
+        return "delete-pembelian";
     }
 
-    @RequestMapping(value="/pembelian/tambah", method= RequestMethod.POST, params={"hapusRow"})
-    public String deleteRow(
-        @ModelAttribute PembelianModel pembelian,
-        final HttpServletRequest request,
-        final BindingResult bindingResult,
-        Model model
+    @GetMapping(value="/filter-pembelian")
+    public String subMenuFilterPembelian(
+            Model model
+
     ){
-        final Integer idPembelianBarang = Integer.valueOf(request.getParameter("hapusRow"));
-        pembelian.getListPembelianBarang().remove(idPembelianBarang.intValue());
+        List<MemberModel> listMember = memberService.getMemberList();
+        List<PembelianModel> listPembelianByMemberAndTipe = new ArrayList<>();
 
-        model.addAttribute("pembelian", pembelian);
-        model.addAttribute("listPembelianBarangService", pembelianBarangService.getPembelianBarangList());
-        return "form-add-pembelian";
+        model.addAttribute("listMemberService",listMember);
+        model.addAttribute("listPembelianByMemberAndTipe", listPembelianByMemberAndTipe);
+        model.addAttribute("submenu", "Cari Pembelian Berdasarkan Member/Tipe Pembayaran");
+        return "form-cari-pembelian-by-member-and-tipe";
     }
 
+
+    @RequestMapping(path="/cari/pembelian", params={"idMember", "tipePembayaran"}, method = RequestMethod.GET)
+    public String getPembelianbyMemberAndTipeBayar(
+            @RequestParam(value="idMember") Long idMember,
+            @RequestParam(value = "tipePembayaran") boolean tipePembayaran,
+            Model model
+    ){
+        //ambil semua member
+        List<MemberModel> listMember = memberService.getMemberList();
+
+        //ambil listpembelian
+        List<PembelianModel> listPembelian = pembelianService.getPembelianList();
+
+        List<PembelianModel> listPembelianByMemberAndTipe = new ArrayList<>();
+        List<PembelianModel> listAllMember = new ArrayList<>();
+
+        for(PembelianModel p : listPembelian){
+            if(p.getIsCash() == tipePembayaran && p.getMember().getId().equals(idMember)){
+                listPembelianByMemberAndTipe.add(p);
+            }
+        }
+        List<Integer> listTotalJumlah = new ArrayList<>();
+        //for loop isi listPembelian Service
+        for (PembelianModel p : listPembelianByMemberAndTipe){
+            Integer totalJumlahPerPembelian = pembelianService.getJumlahTotal(p);
+            listTotalJumlah.add(totalJumlahPerPembelian);
+        }
+
+        model.addAttribute("listPembelianByMemberAndTipe", listPembelianByMemberAndTipe);
+        model.addAttribute("listMemberService",listMember);
+        model.addAttribute("listTotalJumlah", listTotalJumlah);
+
+        return "form-cari-pembelian-by-member-and-tipe";
+
+    }
 
 }

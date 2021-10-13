@@ -13,31 +13,74 @@
 <nav th:replace="fragments/fragment :: navbar('')"></nav>
 <div class="container" style="padding:30px">
     <div class="card border-0 shadow-sm mb-5 rounded" >
+
         <h3 class="card-header bg-warning border-0 text-center">Detail Pembelian</h3>
-        <div class="card-body">
-            <p th:text="'No Invoice         : ' + ${pembelian.noInvoice}"></p>
-            <p th:text="'Total Harga        : Rp' + ${pembelian.total}"></p>
-            <p th:text="'Member             : ' + ${pembelian.member}"></p>
-            <p th:text="'Jumlah Barang      : ' + ${pembelian.member}"></p>
-            <p th:text="'Tanggal Pembelian  : ' + ${pembelian.tanggalPembelian}"></p>
-            <p th:text="'Nama Admin         : ' + ${pembelian.namaAdmin}"></p>
-            <p th:if="${pembelian.isCash == true}">Metode Pembayaran : Tunai</p>
-            <p th:if="${pembelian.isCash == false}">Metode Pembayaran : Cicilan</p>
+        <table class="table table-borderless">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th class="col-lg-3" scope="row">No Invoice</th>
+                <td class="col-lg-9" th:text="': '+${pembelian.noInvoice}"></td>
+            </tr>
+            <tr>
+                <th class="col-lg-3" scope="row">Total Harga</th>
+                <td class="col-lg-9" th:text="': '+${pembelian.total}"></td>
+            </tr>
+            <tr>
+                <th class="col-lg-3" scope="row">Member</th>
+                <td class="col-lg-9" th:text="': '+${pembelian.member.namaMember}"></td>
+            </tr>
+            <tr>
+                <th class="col-lg-3" scope="row">Jumlah Barang</th>
+                <td class="col-lg-9" th:text="': '+${jumlahBarang}"></td>
+            </tr>
+            <tr>
+                <th class="col-lg-3" scope="row">Tanggal Pembelian</th>
+                <td class="col-lg-9" th:text="': '+${pembelian.tanggalPembelian}"></td>
+            </tr>
+            <tr>
+                <th class="col-lg-3" scope="row">Nama Admin</th>
+                <td class="col-lg-9" th:text="': '+${pembelian.namaAdmin}"></td>
+            </tr>
+            <tr>
+                <th class="col-lg-3" scope="row">Metode Pembayaran</th>
+                <td class="col-lg-93"th:if="${pembelian.isCash == true}">: Tunai</td>
+                <td class="col-lg-9" th:if="${pembelian.isCash == false}">: Cicilan</td>
+            </tr>
+            </tbody>
+        </table>
+<!--        <div class="card-body">-->
+<!--            <p th:text="'No Invoice         : ' + ${pembelian.noInvoice}"></p>-->
+<!--            <p th:text="'Total Harga        : Rp' + ${pembelian.total}"></p>-->
+<!--            <p th:text="'Member             : ' + ${pembelian.member.namaMember}"></p>-->
+<!--            <p th:text="'Jumlah Barang      : ' + ${jumlahBarang}"></p>-->
+<!--            <p th:text="'Tanggal Pembelian  : ' + ${pembelian.tanggalPembelian}"></p>-->
+<!--            <p th:text="'Nama Admin         : ' + ${pembelian.namaAdmin}"></p>-->
+<!--            <p th:if="${pembelian.isCash == true}">Metode Pembayaran : Tunai</p>-->
+<!--            <p th:if="${pembelian.isCash == false}">Metode Pembayaran : Cicilan</p>-->
+<!--        </div>-->
+        <div class="card border-0">
+            <div class="row justify-content-end" style="padding-left:20px">
+                <button class="justify-content-end btn btn-outline-dark btn-danger text-white" style="margin:30px; padding-left:20px; padding-right:20px" th:href="@{/pembelian/hapus/} + ${pembelian.id}">Hapus</button>
+            </div>
         </div>
     </div>
-    <div class="card border-0">
-        <div class="row justify-content" style="padding-left:20px">
-            <a class="btn btn-outline-warning text-warning" href="/barang">Kembali</a>
-        </div>
-    </div>
+
 
     <div class="row justify-content-md-center" >
         <h3 style="padding:30px">Daftar Barang</h3>
     </div>
     <div class="row justify-content-start" style="padding-left:10px">
-        <table class="table table-striped">
+        <table class="table">
             <thead class="bg-warning text-center" style="padding:15px">
             <th>No.</th>
+            <th>Nama</th>
             <th>Merek</th>
             <th>Tipe</th>
             <th>Tanggal Garansi</th>
@@ -50,16 +93,23 @@
                 <td th:text="${item.count}" class="text-center"></td>
                 <td th:text="${pb.barang.namaBarang}" class="text-center"></td>
                 <td th:text="${pb.barang.merkBarang}" class="text-center"></td>
-                <td th:text="${pb.barang.tipeBarang}" class="text-center"></td>
+                <td th:text="${pb.barang.tipe.namaTipe}" class="text-center"></td>
                 <td th:text="${pb.tanggalGaransi}" class="text-center"></td>
                 <td th:text="${pb.barang.hargaBarang}" class="text-center"></td>
-                <td th:text="${pb.barang.hargaBarang}" class="text-center"></td>
-                <td th:text="${pb.barang.hargaBarang}" class="text-center"></td>
+                <td th:text="${pb.quantity}" class="text-center"></td>
+                <td th:text="${pb.pembelian.total}" class="text-center"></td>
             </tr>
             </tbody>
         </table>
     </div>
 
+    <div class="card border-0">
+        <div class="row justify-content" style="padding-left:20px">
+            <a class="btn btn-outline-warning text-warning" href="/pembelian">Kembali</a>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>
+

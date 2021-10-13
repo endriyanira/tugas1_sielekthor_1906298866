@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <title>Sielekthor</title>
+    <meta charset="UTF-8">
+    <title> Home </title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar('')"></nav>
+<div class="container">
+    <div class="card m-4 p-4 border-0">
+        <div class="card-body border-bottom">
+            <div class="justify-content-center">
+                <h2 class="text-center">Cari Barang</h2>
+                <br>
+                <form th:action="@{/barang/}" method="GET">
+                    Tipe<br>
+                        <select class="form-control" style="border-radius: 10px" id="idTipe" name="idTipe">
+                            <option th:each="tipe : ${listTipeService}"
+                                    th:value="${tipe.id}"
+                                    th:text="${tipe.namaTipe}"
+                                    th:seleced="${tipe.id}">
+                            </option>
+                        </select>
+                    <br>
+                    Stok<br>
+                    <div class="radio">
+                        <label><input value = "1" type="radio" name="stok" checked> Available</label>
+                    </div>
+                    <div class="radio">
+                        <label><input value = "0" type="radio" name="stok" checked> Sold Out</label>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row justify-content-center" style="padding:10px">
+                        <button class="col btn btn-warning border-0" style="border-radius:10px; padding-left:25px; padding-right:25px; margin-left:50px;margin-right:25px">Cari</button>
+                        <button class="col btn btn-outline-warning text-bold-warning" style="border-radius:10px; padding-left:25px; padding-right:25x; margin-left:25px;margin-right:50px" href="/barang">Kembali</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div th:if="*{listBarangTipeStok != null}">
+        <div class="card-body">
+            <div class="row justify-content-start" style="padding-left:10px">
+                <table class="table table-striped">
+                    <thead class="bg-warning text-center" style="padding:15px">
+                    <th>No.</th>
+                    <th>Nama</th>
+                    <th>Harga</th>
+                    <th>Tipe</th>
+                    <th>Stok</th>
+                    <th>Aksi</th>
+                    </thead>
+                    <tbody>
+                    <tr th:each="barang, item: ${listBarangTipeStok}">
+                        <td th:text="${item.count}" class="text-center"></td>
+                        <td th:text="${barang.namaBarang}" class="text-center"></td>
+                        <td th:text="${barang.hargaBarang}" class="text-center"></td>
+                        <td th:text="${barang.tipe.namaTipe}" class="text-center"></td>
+                        <td th:text="${barang.stokBarang}" class="text-center"></td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-info font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/} + ${barang.id}">Lihat</a>
+                            <a class="btn btn-sm btn-warning font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/ubah/} + ${barang.id}">Ubah</a>
+                            <a class="btn btn-sm btn-danger font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/hapus/}+ ${barang.id}">Hapus</a>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div th:unless="*{listBarangTipeStok!= null}">
+        <br>
+    </div>
+
+</div>
+
+
+</body>
+</html>

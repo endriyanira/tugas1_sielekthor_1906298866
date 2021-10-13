@@ -32,19 +32,18 @@ public class PembelianBarangModel {
 
     //Relasi dengan Barang
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_barang", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "id_barang", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private BarangModel barang;
 
     //Relasi dengan Pembelian
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_pembelian", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "id_pembelian", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private PembelianModel pembelian;
 
     @NotNull
     @Column(name="tanggal_garansi",nullable = false)
-    @DateTimeFormat(pattern = "YYYY-MM-DD")
     private Date tanggalGaransi;
 
 //    jumlah pembelian suatu barang

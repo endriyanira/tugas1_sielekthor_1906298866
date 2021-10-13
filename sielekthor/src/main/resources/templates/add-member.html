@@ -15,7 +15,7 @@
   <div class="card m-4 p-4">
     <div class="card-body">
       <div class="justify-content-center">
-        <h2 th:text="'Member dengan nama ' + ${namaMember} + ' berhasil ditambahkan.'"></h2>
+        <h2>Member dengan nama <span class="text-bold" style="color: #f9a825"  th:text="${namaMember}"></span> berhasil ditambahkan.</h2>
         <a class="btn btn-outline-warning text-warning" href="/member">Kembali</a>
       </div>
     </div>

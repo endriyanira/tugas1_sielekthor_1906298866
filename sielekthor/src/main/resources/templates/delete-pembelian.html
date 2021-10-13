@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <title>Sielekthor</title>
+    <meta charset="UTF-8">
+    <title> Home </title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar('')"></nav>
+<div class="container">
+    <div class="card m-4 p-4 border-0">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <div th:if="${listPembelianBarangUpdate!=null}">
+                    <h2>Pembelian dengan nomor invoice<span class="text-bold" style="color: #f9a825"  th:text="${noInvoice}"></span> berhasil dihaus dan
+                        stok barang </h2>
+                    <br>
+                    <div th:each="pb : ${listPembelianBarangUpdate}">
+                        <h2><span class="text-bold" style="color: #f9a825"  th:text="${pb.barang.namaBarang}"></span> menjadi <span class="text-bold" style="color: #f9a825"  th:text="${pb.barang.stokBarang}"></span> </h2>
+                    </div>
+                    <br>
+
+                </div>
+                <div th:unless="${listPembelianBarangUpdate != null}">
+                    <br>
+                </div>
+                <a class="btn btn-outline-warning text-warning" href="/pembelian">Kembali</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

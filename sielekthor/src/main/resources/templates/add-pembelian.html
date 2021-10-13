@@ -12,11 +12,11 @@
 <body>
 <nav th:replace="fragments/fragment :: navbar('')"></nav>
 <div class="container">
-  <div class="card m-4 p-4 border-0">
+  <div class="card m-4 p-4">
     <div class="card-body">
       <div class="justify-content-center">
-        <h2>Barang dengan kode <span class="text-bold" style="color: #f9a825"  th:text="${kodeBarang}"></span> berhasil diubah.</h2>
-        <a class="btn btn-outline-warning text-warning" href="/barang">Kembali</a>
+        <h2>Pembelian dengan Nomor Invoice <span class="text-bold" style="color: #f9a825"  th:text="${nomorInvoice}"></span> berhasil ditambahkan.</h2>
+        <a class="btn btn-outline-warning text-warning" href="/pembelian">Kembali</a>
       </div>
     </div>
   </div>

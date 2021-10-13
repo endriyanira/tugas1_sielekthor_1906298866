@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class PembelianModel {
     @Id
-    @Max(20)
+//    @Max(20)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -56,7 +57,7 @@ public class PembelianModel {
 //  metode pembayaran
     @NotNull
     @Column(name = "is_cash", nullable = false)
-    private boolean isCash;
+    private Boolean isCash;
 
 //  Relasi dengan Member
     @ManyToOne(fetch = FetchType.EAGER, optional = false)

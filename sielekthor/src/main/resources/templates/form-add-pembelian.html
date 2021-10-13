@@ -15,17 +15,16 @@
     <div class="card m-4 p-4">
         <div class="card-body">
             <div class="justify-content-center">
-                <h2>Form Tambah Pembelian</h2>
+                <h2 class="text-center">Form Tambah Pembelian</h2>
                 <br>
                 <form th:action="@{/pembelian/tambah}" th:object="${pembelian}" method="POST">
-                    <input type="hidden" th:field="*{id}" />
 
                     Nama Admin <br>
                     <input required class="form-control" style="border-radius: 10px" type="text" name="namaAdmin" th:value="*{namaAdmin}" />
                     <br><br>
 
                     Pembeli<br>
-                    <select class="form-control" style="border-radius: 10px" th:field="*{member}">
+                    <select th:value="*{member}" class="form-control" style="border-radius: 10px" th:field="*{member}">
                         <option value="" selected disabled hidden>---Pilih Member---</option>
                         <option th:each="mb : ${listMemberService}"
                                 th:value="${mb.id}"
@@ -34,6 +33,16 @@
                         </option>
                     </select>
                     <br>
+
+                    Metode Pembayaran :
+                    <div class="radio">
+                        <label><input value = "1" type="radio" name="isCash" checked> Tunai</label>
+                    </div>
+                    <div class="radio">
+                        <label><input value = "0" type="radio" name="isCash" checked> Cicil</label>
+                    </div>
+                    <br>
+
                     <table class="table">
                         <thead>
                         <tr>
@@ -47,7 +56,7 @@
                             <td>
                                 Nama Barang
                                 <br>
-                                <select class="form-control" th:field="*{listPembelianBarang[__${iterationStatus.index}__].id}">
+                                <select class="form-control" th:field="*{listPembelianBarang[__${iterationStatus.index}__].barang}">
                                     <option th:each="brg : ${listBarangService}"
                                             th:value="${brg.id}"
                                             th:text="${brg.namaBarang}"
@@ -57,7 +66,8 @@
                             </td>
                             <td>
                                 Qty <br>
-                                <input required class="form-control" type="text" name="quantity" th:value="${pembelianBarang.quantity}"/>
+                                <input required class="form-control" type="text" name="quantity" th:field="*{listPembelianBarang[__${iterationStatus.index}__].quantity}"/>
+<!--                                <input required hidden class="form-control" type="text" name="id_pembelian" th:value="*{id}"/>-->
                             </td>
                             <td>
                                 <br>

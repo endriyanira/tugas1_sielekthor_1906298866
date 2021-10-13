@@ -15,9 +15,11 @@
   <div class="row justify-content-md-center" >
     <h3 style="padding:30px">Daftar Barang</h3>
   </div>
-  <div class="row justify-content-start" style="padding:10px">
-    <a class="btn btn-warning font-weight-bold" style="border-radius: 10px;" href="/barang/tambah">+ Tambah Barang</a>
+  <div class="row" style="padding:10px">
+    <a class="col justify-content-start btn btn-warning font-weight-bold" style="border-radius: 10px; margin-right:100px;" href="/barang/tambah">+ Tambah Barang</a>
+    <a class="col justify-content-end btn btn-outline-warning font-weight-bold text-warning" style="border-radius: 10px; margin-left:100px;" href="/barang/cari">Filter</a>
   </div>
+
   <div class="row justify-content-start" style="padding-left:10px">
     <table class="table table-striped">
       <thead class="bg-warning text-center" style="padding:15px">
@@ -38,8 +40,7 @@
         <td class="text-center">
           <a class="btn btn-sm btn-info font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/} + ${barang.id}">Lihat</a>
           <a class="btn btn-sm btn-warning font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/ubah/} + ${barang.id}">Ubah</a>
-<!--          <a class="btn btn-sm btn-warning font-weight-bold text-dark" style="border-radius:5px;"  th:href="@{/barang/ubah/} + ${barang.id}">Ubah</a>-->
-          <a class="btn btn-sm btn-danger font-weight-bold text-dark" style="border-radius:5px;" href="/">Hapus</a>
+          <a class="btn btn-sm btn-danger font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/hapus/}+ ${barang.id}">Hapus</a>
 
         </td>
       </tr>

@@ -13,9 +13,9 @@
 <nav th:replace="fragments/fragment :: navbar('')"></nav>
 <div class="container">
     <div class="row justify-content-md-center" >
-        <h3 style="padding:30px">Daftar Member</h3>
+        <h2 style="margin-top:20px; padding:30px" class="text-bold">Top Member</h2>
     </div>
-    <div class="row justify-content-start" style="padding:10px">
+    <div class="row justify-content-start" style="padding-bottom:10px; padding-left:10px">
         <a class="btn btn-warning font-weight-bold" style="border-radius: 10px;" href="/member/tambah">+ Tambah Member</a>
     </div>
     <div class="row justify-content-start" style="padding-left:10px">
@@ -26,7 +26,7 @@
             <th>Tanggal Lahir</th>
             <th>Tanggal Pendaftaran</th>
             <th>Jenis Kelamin</th>
-            <th></th>
+            <th>Jumlah Pembelian</th>
             </thead>
             <tbody>
             <tr th:each="member, item: ${listMember}">
@@ -34,13 +34,9 @@
                 <td th:text="${member.namaMember}" class="text-center"></td>
                 <td th:text="${member.tanggalLahir}" class="text-center"></td>
                 <td th:text="${member.tanggalPendaftaran}" class="text-center"></td>
-<!--                <td th:text="${member.tanggalPendaftaran.format(localDateTime, 'yyyy-MM-dd')}" class="text-center"></td>-->
                 <td class="text-center" th:if="${member.jenisKelamin} == 1">Laki-Laki</td>
                 <td class="text-center" th:if="${member.jenisKelamin} == 0">Perempuan</td>
-                <td class="text-center">
-                    <a class="btn btn-sm btn-info font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/member/ubah/} + ${member.id}">Update</a>
-
-                </td>
+                <td th:text="${listJumlahPembelianMember[__${item.index}__]}" class="text-center"></td>
             </tr>
             </tbody>
         </table>

@@ -15,19 +15,61 @@
     <div class="card border-0 shadow-sm mb-5 rounded" >
         <h3 class="card-header bg-warning border-0 text-center">Detail Barang</h3>
         <div class="card-body">
-            <p th:text="'Nama Barang    : ' + ${barang.namaBarang}"></p>
-            <p th:text="'Kode Barang    : ' + ${barang.kodeBarang}"></p>
-            <p th:text="'Merk Barang    : ' + ${barang.merkBarang}"></p>
-            <p th:text="'Stok Barang    : ' + ${barang.stokBarang}"></p>
-            <p th:text="'Garansi Toko   : ' + ${barang.jumlahGaransi}"></p>
-            <p th:text="'Deskripsi      : ' + ${barang.deskripsiBarang}"></p>
-            <p th:text="'Tipe Barang    : ' + ${barang.tipe.namaTipe}"></p>
-            <p th:text="'Harga          : Rp' + ${barang.hargaBarang}"></p>
+            <table class="table table-borderless">
+                <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th class="col-lg-3" scope="row">Nama Barang</th>
+                    <td class="col-lg-9" th:text="': '+${barang.namaBarang}"></td>
+                </tr>
+                <tr>
+                    <th class="col-lg-3" scope="row">Kode Barang</th>
+                    <td class="col-lg-9" th:text="': '+${barang.kodeBarang}"></td>
+                </tr>
+                <tr>
+                    <th class="col-lg-3" scope="row">Merk Barang</th>
+                    <td class="col-lg-9" th:text="': '+${barang.merkBarang}"></td>
+                </tr>
+                <tr>
+                    <th class="col-lg-3" scope="row">Stok Barang</th>
+                    <td class="col-lg-9" th:text="': '+${barang.stokBarang}"></td>
+                </tr>
+                <tr>
+                    <th class="col-lg-3" scope="row">Garansi Toko</th>
+                    <td class="col-lg-9" th:text="': '+${barang.jumlahGaransi}"></td>
+                </tr>
+                <tr>
+                    <th class="col-lg-3" scope="row">Deskripsi</th>
+                    <td class="col-lg-9" th:text="': '+${barang.deskripsiBarang}"></td>
+                </tr>
+                <tr>
+                    <th class="col-lg-3" scope="row">Tipe Barang</th>
+                    <td class="col-lg-9" th:text="': '+${barang.tipe.namaTipe}"></td>
+                </tr>
+                <tr>
+                    <th class="col-lg-3" scope="row">Harga</th>
+                    <td class="col-lg-9" th:text="': Rp' + ${barang.hargaBarang}"></td>
+                </tr>
+                </tbody>
+            </table>
+<!--            <p th:text="'Nama Barang    : ' + ${barang.namaBarang}"></p>-->
+<!--            <p th:text="'Kode Barang    : ' + ${barang.kodeBarang}"></p>-->
+<!--            <p th:text="'Merk Barang    : ' + ${barang.merkBarang}"></p>-->
+<!--            <p th:text="'Stok Barang    : ' + ${barang.stokBarang}"></p>-->
+<!--            <p th:text="'Garansi Toko   : ' + ${barang.jumlahGaransi}"></p>-->
+<!--            <p th:text="'Deskripsi      : ' + ${barang.deskripsiBarang}"></p>-->
+<!--            <p th:text="'Tipe Barang    : ' + ${barang.tipe.namaTipe}"></p>-->
+<!--            <p th:text="'Harga          : Rp' + ${barang.hargaBarang}"></p>-->
         </div>
     </div>
     <div class="card border-0">
         <div class="row justify-content" style="padding-left:20px">
-            <a class="btn btn-outline-warning text-warning" href="/barang">Kembali</a>
+            <a class="btn btn-outline-warning text-warning" style="border-radius:10px; padding-left:20px; padding-right:20px" href="/barang">Kembali</a>
         </div>
     </div>
 

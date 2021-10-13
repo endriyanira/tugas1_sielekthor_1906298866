@@ -47,12 +47,13 @@
                         <br>
 
                         Tipe Barang<br>
-                        <select  th:field="*{tipe}" class="form-control border-0" style="border-radius: 10px">
+                        <select  th:field="*{tipe}" class="form-control border-0" style="border-radius: 10px" disabled>
                             <option th:value="*{tipe.id}"
                                     th:text="*{tipe.namaTipe}"
                                     th:selected="*{tipe.id}">
                             </option>
                         </select>
+                        <input type="hidden" th:field="*{tipe}"/>
                         <br>
 
                         Harga<br>
@@ -65,8 +66,6 @@
                             <div class="col justify-content-end">
                                 <button name="submit" type="submit" class="btn btn-warning " style="border-radius: 10px;">Simpan</button>
                             </div>
-
-
                         </div>
                     </form>
                 </div>

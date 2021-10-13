@@ -15,9 +15,11 @@
     <div class="row justify-content-md-center" >
         <h3 style="padding:30px">Daftar Pembelian</h3>
     </div>
-    <div class="row justify-content-start" style="padding:10px">
-        <a class="btn btn-warning font-weight-bold" style="border-radius: 10px;" href="/pembelian/tambah">+ Tambah Pembelian</a>
+    <div class="row" style="padding:10px">
+        <a class="col justify-content-start btn btn-warning font-weight-bold" style="border-radius: 10px; margin-right:100px;" href="/pembelian/tambah">+ Tambah Pembelian</a>
+        <a class="col justify-content-end btn btn-outline-warning font-weight-bold text-warning" style="border-radius: 10px; margin-left:100px;" href="/filter-pembelian">Cari Pembelian Berdasarkan Member/Tipe Pembayaran</a>
     </div>
+    <div th:if="*{listPembelian.size() != 0}">
     <div class="row justify-content-start" style="padding-left:10px">
         <table class="table table-striped">
             <thead class="bg-warning text-center" style="padding:15px">
@@ -31,20 +33,23 @@
             </thead>
             <tbody>
             <tr th:each="pembelian, item: ${listPembelian}">
-<!--                <td th:text="${item.count}" class="text-center"></td>-->
-<!--                <td th:text="${pembelian.noInvoice}" class="text-center"></td>-->
-<!--                <td th:text="${pembelian.total}" class="text-center"></td>-->
-<!--                <td th:text="${pembelian.member}" class="text-center"></td>-->
-<!--                <td th:text="${pembelian.member.namaMember}" class="text-center"></td>-->
-<!--                <td th:text="${pembelian.member.namaMember}" class="text-center"></td>-->
-<!--                <td th:text="${pembelian.tanggalPembelian}" class="text-center"></td>-->
+                <td th:text="${item.count}" class="text-center"></td>
+                <td th:text="${pembelian.noInvoice}" class="text-center"></td>
+                <td th:text="${pembelian.total}" class="text-center"></td>
+                <td th:text="${pembelian.member.namaMember}" class="text-center"></td>
+                <td th:text="${listTotalJumlah[__${item.index}__]}" class="text-center"></td>
+                <td th:text="${pembelian.tanggalPembelian}" class="text-center"></td>
                 <td class="text-center">
-                    <a class="btn btn-sm btn-info font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/} + ${barang.id}">Lihat</a>
-                    <a class="btn btn-sm btn-danger font-weight-bold text-dark" style="border-radius:5px;" href="/">Hapus</a>
+                    <a class="btn btn-sm btn-info font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/pembelian/} + ${pembelian.id}">Lihat</a>
+                    <a class="btn btn-sm btn-danger font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/pembelian/hapus/} + ${pembelian.id}">Hapus</a>
                 </td>
             </tr>
             </tbody>
         </table>
+    </div>
+    </div>
+    <div th:unless="*{listPembelian  != 0}">
+        <br>
     </div>
 </div>
 

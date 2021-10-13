@@ -35,7 +35,7 @@ public class BarangModel {
 
     @NotNull
     @Column(name="stok", nullable = false)
-    private Integer stokBarang;
+        private Integer stokBarang;
 
     @NotNull
     @Column(name="jumlah_garansi", nullable = false)
@@ -48,7 +48,7 @@ public class BarangModel {
 
     @NotNull
     @Size(max=255)
-    @Column(name="kode_barang", nullable = false)
+    @Column(name="kode_barang", nullable = false, unique = true)
     private String kodeBarang;
 
     @NotNull

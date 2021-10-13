@@ -1,9 +1,12 @@
 package apap.tugas.sielekthor.service;
 
 import apap.tugas.sielekthor.model.MemberModel;
+import apap.tugas.sielekthor.model.PembelianBarangModel;
+import apap.tugas.sielekthor.model.PembelianModel;
 import apap.tugas.sielekthor.repository.MemberDb;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,7 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 @Service
 @Transactional
@@ -28,8 +32,21 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void updateMember(MemberModel member){
+    public void updateMember(MemberModel member)  {
         memberDb.save(member);
+    }
+
+    @Override
+    public Integer jumlahBarang(MemberModel member) {
+        Integer jumlahBarang = 0;
+        List<PembelianModel> listPembelian = member.getListPembelian();
+        for (PembelianModel p : listPembelian){
+            List<PembelianBarangModel> listPembelianBarang= p.getListPembelianBarang();
+            for(PembelianBarangModel pb : listPembelianBarang){
+                jumlahBarang += pb.getQuantity();
+            }
+        }
+        return jumlahBarang;
     }
 
     @Override
@@ -52,7 +69,7 @@ public class MemberServiceImpl implements MemberService {
         String[] list = dt.split("T");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        Date date = (Date) formatter.parse(list[0]+" "+list[1]+":00");
+        java.util.Date date = formatter.parse(list[0]+" "+list[1]+":00");
         java.sql.Timestamp timeStampDate = new Timestamp(date.getTime());
         return timeStampDate;
     }
