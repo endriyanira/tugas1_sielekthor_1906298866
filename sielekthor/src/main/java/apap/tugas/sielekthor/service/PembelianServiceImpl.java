@@ -118,4 +118,16 @@ public class PembelianServiceImpl implements PembelianService{
         pembelianDb.delete(getPembelianByIdPembelian(idpembelian));
     }
 
+    @Override
+    public String getJenisPembayaran(boolean tipePembayaran) {
+        String jenisPembayaran;
+        if(tipePembayaran){
+            jenisPembayaran = "Tunai";
+        }
+        else{
+            jenisPembayaran= "Cicilan";
+        }
+        return jenisPembayaran;
+    }
+
 }

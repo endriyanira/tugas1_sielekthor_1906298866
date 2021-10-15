@@ -35,13 +35,11 @@ public class PembelianController {
             Model model){
 
         List<Integer> listTotalJumlah = new ArrayList<>();
-
-        //for loop isi listPembelian Service
         for (PembelianModel p : pembelianService.getPembelianList()){
             Integer totalJumlahPerPembelian = pembelianService.getJumlahTotal(p);
                 listTotalJumlah.add(totalJumlahPerPembelian);
         }
-        // kirim listTotalJumlahBarang tiap Pembelian
+
         model.addAttribute("listTotalJumlah", listTotalJumlah);
         model.addAttribute("listPembelian", pembelianService.getPembelianList());
         return "viewall-pembelian";
@@ -67,20 +65,14 @@ public class PembelianController {
     ){
         //Get Pembelian Model by IdPembelian
         PembelianModel pembelian = pembelianService.getPembelianByIdPembelian(idPembelian);
-
-        //GetListPembelianBarang
         List<PembelianBarangModel>  listPembelianBarang = pembelian.getListPembelianBarang();
-
-        //Get NomorInvoice
         String nomorInvoice = pembelian.getNoInvoice();
 
         for(PembelianBarangModel pb : listPembelianBarang){
-            //update jumlah barang setelah pembelian di hapus
             pb.getBarang().setStokBarang(pb.getQuantity()+pb.getBarang().getStokBarang());
             barangService.updateBarang(pb.getBarang());
         }
 
-        //Temp List
         List<PembelianBarangModel> listPembelianBarangUpdate = pembelian.getListPembelianBarang();
         pembelianService.deletePembelian(idPembelian);
 
@@ -112,38 +104,26 @@ public class PembelianController {
         MemberModel member = memberService.getMemberByIdMember(idMember);
         List<MemberModel> listMember = memberService.getMemberList();
 
-        //ambil listpembelian dari member yang udah dipilih
         List<PembelianModel> listPembelian = member.getListPembelian();
-
         List<PembelianModel> listPembelianByMemberAndTipe = new ArrayList<>();
 
         for(PembelianModel p : listPembelian){
             if(p.getIsCash() == tipePembayaran){
-                //isi ke listyangbakalan di kirim ke html
                 listPembelianByMemberAndTipe.add(p);
             }
         }
 
         List<Integer> listTotalJumlah = new ArrayList<>();
-        //for loop isi listPembelian Service
         for (PembelianModel p : listPembelianByMemberAndTipe){
-            // Dapetin jumlahtotalnominalharga barang tiap pembelian
             Integer totalJumlahPerPembelian = pembelianService.getJumlahTotal(p);
             listTotalJumlah.add(totalJumlahPerPembelian);
         }
 
-        String jenisPembayaran;
-        if(tipePembayaran){
-            jenisPembayaran = "Tunai";
-        }
-        else{
-            jenisPembayaran= "Cicilan";
-        }
+        String jenisPembayaran = pembelianService.getJenisPembayaran(tipePembayaran);
 
         model.addAttribute("listPembelianByMemberAndTipe", listPembelianByMemberAndTipe);
         model.addAttribute("listMemberService",listMember);
         model.addAttribute("listTotalJumlah", listTotalJumlah);
-//        System.out.println(idMember);
         model.addAttribute("lastMember", idMember);
         model.addAttribute("tipePembayaran", tipePembayaran);
         model.addAttribute("jenisPembayaran", jenisPembayaran );

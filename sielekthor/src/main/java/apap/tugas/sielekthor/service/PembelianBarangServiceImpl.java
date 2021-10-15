@@ -17,7 +17,6 @@ public class PembelianBarangServiceImpl implements PembelianBarangService {
     @Autowired
     PembelianBarangDb pembelianBarangDb;
 
-
     @Override
     public void addPembelianBarang(PembelianBarangModel pembelianBarang) {
         pembelianBarangDb.save(pembelianBarang);

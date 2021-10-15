@@ -10,11 +10,8 @@ public interface PembelianService {
     List<PembelianModel> getPembelianList();
     PembelianModel getPembelianByIdPembelian(Long idPembelian);
     String createInvoiceNumber(PembelianModel pembelian);
-
     Integer getTotalPembelian(PembelianModel pembelian);
-
     int getJumlahTotal(PembelianModel pembelian);
-
     void deletePembelian(Long idpembelian);
-
+    String getJenisPembayaran(boolean tipePembayaran);
 }

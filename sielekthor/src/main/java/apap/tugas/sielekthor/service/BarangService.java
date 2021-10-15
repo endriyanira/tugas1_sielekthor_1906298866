@@ -10,10 +10,6 @@ public interface BarangService {
     void updateBarang(BarangModel barang);
     List<BarangModel> getBarangList();
     BarangModel getBarangByIdBarang(Long idBarang);
-
-    List<BarangModel> getBarangbyTipe(TipeModel tipe);
-
     List<BarangModel> getBarangbyStok(List<BarangModel> listBarangbyTipe, boolean stokBarang);
-
     void deleteBarang(Long idBbarang);
 }

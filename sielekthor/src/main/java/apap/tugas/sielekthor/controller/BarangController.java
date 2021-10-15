@@ -129,7 +129,7 @@ public class BarangController {
         List<BarangModel> listBarang = tipeModel.getListBarang();
 
         //Dapeting listBarang by Tipe
-        List<BarangModel> listBarangbyTipe = barangService.getBarangbyTipe(tipeModel);
+        List<BarangModel> listBarangbyTipe = tipeModel.getListBarang();
 
         //Dapetin listBarang by Tipe and Stok
         List<BarangModel> listBarangTipeStok = barangService.getBarangbyStok(listBarangbyTipe, stokBarang);

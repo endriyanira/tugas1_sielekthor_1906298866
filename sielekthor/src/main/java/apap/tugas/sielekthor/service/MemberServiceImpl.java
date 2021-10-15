@@ -30,19 +30,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Integer jumlahBarang(MemberModel member) {
-        Integer jumlahBarang = 0;
-        List<PembelianModel> listPembelian = member.getListPembelian();
-        for (PembelianModel p : listPembelian){
-            List<PembelianBarangModel> listPembelianBarang= p.getListPembelianBarang();
-            for(PembelianBarangModel pb : listPembelianBarang){
-                jumlahBarang += pb.getQuantity();
-            }
-        }
-        return jumlahBarang;
-    }
-
-    @Override
     public List<MemberModel> getMemberList(){
         return memberDb.findAll();
     }
@@ -54,30 +41,5 @@ public class MemberServiceImpl implements MemberService {
             return member.get();
         }
         return null;
-    }
-
-    @Override
-    public Timestamp convertStringtoTimestamp(String dt) throws ParseException {
-
-        String[] list = dt.split("T");
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        java.util.Date date = formatter.parse(list[0]+" "+list[1]+":00");
-        java.sql.Timestamp timeStampDate = new Timestamp(date.getTime());
-        return timeStampDate;
-    }
-
-    @Override
-    public String formatPenulisanTanggalLahir(java.sql.Date dt) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
-        String strDate = formatter.format(dt);
-        return strDate;
-    }
-
-    @Override
-    public String formatPenulisanTanggalPendaftaran(Timestamp tm) {
-        String str=tm.toString();
-        String[] list = str.split(" ");
-        return (list[0]);
     }
 }
