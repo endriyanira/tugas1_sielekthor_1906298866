@@ -1,20 +1,13 @@
 package apap.tugas.sielekthor.service;
 
-import apap.tugas.sielekthor.model.MemberModel;
 import apap.tugas.sielekthor.model.PembelianBarangModel;
 import apap.tugas.sielekthor.model.PembelianModel;
 import apap.tugas.sielekthor.repository.PembelianDb;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
-import java.lang.reflect.Member;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.Random;
 
@@ -53,22 +46,25 @@ public class PembelianServiceImpl implements PembelianService{
     @Override
     public String createInvoiceNumber(PembelianModel pembelian) {
         String invoiceNumber="";
+
         String namaMember = pembelian.getMember().getNamaMember(); //dapetin nama member
         int temp = (int) namaMember.toLowerCase().charAt(0); //bikin nama jadi lowecase
         String byName = (Integer.toString(temp-96));
+
+        //Ambil karakter pertama namaMember yang udah jadi urutan alphabet
         invoiceNumber += (byName.substring(byName.length()-1));
+
+        //Karakter terakhir nama admin
         invoiceNumber += (pembelian.getNamaAdmin().toUpperCase().charAt(pembelian.getNamaAdmin().length()-1));
 
         String tglbeli = new SimpleDateFormat("yyyy-MM-dd").format(pembelian.getTanggalPembelian());
-
         int tgl = Integer.parseInt(tglbeli.substring(8,10));
         int bln = Integer.parseInt(tglbeli.substring(5,7));
-//        System.out.println("tanggal Beli ddmm " + tgl+bln);
+
+        //4 karakter tanggal pembelian dalam format ddmm
         invoiceNumber += (""+tgl+""+bln);
-        int jumlah = (tgl+bln) * 5;
-//        System.out.println(jumlah);
 
-
+        //Cicilan Or Tunai
         if(pembelian.getIsCash()){
             invoiceNumber += "02";
         }
@@ -76,12 +72,16 @@ public class PembelianServiceImpl implements PembelianService{
             invoiceNumber += "01";
         }
 
+        //3 karakter (tgl beli + bulan bel) * 5
+        int jumlah = (tgl+bln) * 5;
         if(Integer.toString(jumlah).length() < 3){
             invoiceNumber += ("0"+jumlah);
         }
         else{
             invoiceNumber += jumlah;
         }
+
+        //Random 2 Char
         char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
         Random r = new Random();
         for(int i = 0; i < 2; i++) {

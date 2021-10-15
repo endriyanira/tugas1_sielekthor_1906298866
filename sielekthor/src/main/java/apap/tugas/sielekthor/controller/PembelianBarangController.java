@@ -14,16 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -56,15 +51,10 @@ public class PembelianBarangController {
         model.addAttribute("tanggalPembelian", dateFormat.format(date));
 
         List<MemberModel> listMember = memberService.getMemberList();
-        model.addAttribute("listMemberService", listMember); //Ini untuk dropdown form tambah pembelian
+        model.addAttribute("listMemberService", listMember); //Ini untuk dropdown member di form tambah pembelian
 
         //kirim objek pembelian
         model.addAttribute("pembelian", pembelian);
-
-        //kirim atribut pembelian si listpembelianBarang
-//        model.addAttribute("listPembelianBarang", pembelian.getListPembelianBarang());
-
-
         model.addAttribute("pembelianbarang", pembelianbarang);
 
         return "form-add-pembelian";
@@ -73,14 +63,11 @@ public class PembelianBarangController {
     @PostMapping(value="pembelian/tambah")
     public String addPembelianSubmit(
             @ModelAttribute PembelianModel pembelian,
-            HttpServletResponse response,
-            RedirectAttributes redirectAttributes,
-            Model model) throws IOException {
+            Model model) {
 
         Date date = new Date();
         Timestamp timestamp2 = new Timestamp(date.getTime());
         pembelian.setTanggalPembelian(timestamp2);
-        System.out.println(pembelian.getListPembelianBarang());
 
         //dapetin listPembelianBarang sesuai dengan pembelian yang barudibuat
         List<PembelianBarangModel> listPb = pembelian.getListPembelianBarang();
@@ -95,19 +82,17 @@ public class PembelianBarangController {
 
         //cek Stok di pembelian yang request dari listPembelianBarang
         for(PembelianBarangModel pb : pembelian.getListPembelianBarang()){
-            System.out.println("nama barang "+ pb.getBarang().getId());
-            System.out.println("quantity " + pb.getQuantity());
             if(pb.getBarang().getStokBarang() == null){
-//                System.out.println(pb.getBarang().getNamaBarang());
                 listBarangStokTidakMencukupi.add(pb.getBarang());
             }
             else if(pb.getQuantity() > pb.getBarang().getStokBarang()){
                 listBarangStokTidakMencukupi.add(pb.getBarang());
             }
         }
+
+        //cek kalo pas pemebelian ternyata stoknya gacukup, render pesan
         if(listBarangStokTidakMencukupi.size()!=0){
             return "stok-habis";
-
         }
         else{
             pembelian.setNoInvoice(noInvoice);
@@ -117,7 +102,7 @@ public class PembelianBarangController {
             //simpen ke db dulu pembeliannya
             pembelianService.addPembelian(pembelian);
 
-
+            //satu satu nge simpen pembelianBarangModel ke DB
             for(PembelianBarangModel pb : listPb){
                 if(pembelian.getListPembelianBarang() == null){
                     pembelian.setListPembelianBarang(new ArrayList<>());
@@ -130,7 +115,6 @@ public class PembelianBarangController {
                     barang.setListPembelianBarang(new ArrayList<>());
                 }
                 pb.setTanggalGaransi(pembelianBarangService.getTanggalGaransi(pb));
-                System.out.println(pb.getTanggalGaransi());
                 pb.setPembelian(pembelian);
 
                 barang.getListPembelianBarang().add(pb);
@@ -142,7 +126,6 @@ public class PembelianBarangController {
                 pembelianBarangService.addPembelianBarang(pb);
                 pembelianService.updatePembelian(pembelian);
                 barangService.updateBarang(barang);
-
             }
 
             //Kalkulasi semua totalPembelian

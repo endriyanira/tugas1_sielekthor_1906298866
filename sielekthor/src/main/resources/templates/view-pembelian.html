@@ -20,7 +20,6 @@
             <tr>
                 <th scope="col"></th>
                 <th scope="col"></th>
-
             </tr>
             </thead>
             <tbody>
@@ -55,19 +54,12 @@
             </tr>
             </tbody>
         </table>
-<!--        <div class="card-body">-->
-<!--            <p th:text="'No Invoice         : ' + ${pembelian.noInvoice}"></p>-->
-<!--            <p th:text="'Total Harga        : Rp' + ${pembelian.total}"></p>-->
-<!--            <p th:text="'Member             : ' + ${pembelian.member.namaMember}"></p>-->
-<!--            <p th:text="'Jumlah Barang      : ' + ${jumlahBarang}"></p>-->
-<!--            <p th:text="'Tanggal Pembelian  : ' + ${pembelian.tanggalPembelian}"></p>-->
-<!--            <p th:text="'Nama Admin         : ' + ${pembelian.namaAdmin}"></p>-->
-<!--            <p th:if="${pembelian.isCash == true}">Metode Pembayaran : Tunai</p>-->
-<!--            <p th:if="${pembelian.isCash == false}">Metode Pembayaran : Cicilan</p>-->
-<!--        </div>-->
         <div class="card border-0">
             <div class="row justify-content-end" style="padding-left:20px">
-                <button class="justify-content-end btn btn-outline-dark btn-danger text-white" style="margin:30px; padding-left:20px; padding-right:20px" th:href="@{/pembelian/hapus/} + ${pembelian.id}">Hapus</button>
+                <form th:action="@{/pembelian/hapus/} + ${pembelian.id}" th:object="${pembelian}" method="POST">
+                    <button class="btn btn-sm btn-danger font-weight-bold text-dark text-bold" style="border-radius:5px; padding:15px; margin-left:10px; margin-bottom:10px">Hapus</button>
+                </form>
+
             </div>
         </div>
     </div>

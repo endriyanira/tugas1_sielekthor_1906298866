@@ -1,26 +1,19 @@
 package apap.tugas.sielekthor.controller;
 
-import apap.tugas.sielekthor.model.BarangModel;
 import apap.tugas.sielekthor.model.MemberModel;
 import apap.tugas.sielekthor.model.PembelianModel;
-import apap.tugas.sielekthor.service.BarangService;
 import apap.tugas.sielekthor.service.MemberService;
 import apap.tugas.sielekthor.service.PembelianService;
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,7 +48,6 @@ public class MemberController {
 
         memberService.addMember(member);
         model.addAttribute("namaMember", member.getNamaMember());
-
         return "add-member";
     }
 
@@ -78,12 +70,8 @@ public class MemberController {
             @PathVariable Long idMember,
             Model model)  {
 
-        System.out.println("masuk sini");
-//        MemberModel member = memberService.getMemberByIdMember(idMember);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         memberService.updateMember(member);
-        System.out.println(member.getNamaMember());
-        System.out.println(member.getListPembelian().size());
 
         if(member.getListPembelian() != null){
             for(PembelianModel p : member.getListPembelian()){
@@ -116,20 +104,16 @@ public class MemberController {
         for(int i = 0 ; i < listMember.size(); i ++){
             pasangan.put(listMember.get(i),listJumlahPembelianMember.get(i));
         }
-        List<Entry<MemberModel, Integer>> list = new ArrayList<>(pasangan.entrySet());
-        list.sort(Entry.comparingByValue());
-
-        int i = 0;
-        for (Map.Entry<MemberModel, Integer> pair : list) {
-            listMember.set(i, pair.getKey());
-            listJumlahPembelianMember.set(i, pair.getValue());
-            i += 1;
-        }
-        Collections.reverse(listMember);
-        Collections.reverse(listJumlahPembelianMember);
-
-        model.addAttribute("listMember", listMember);
-        model.addAttribute("listJumlahPembelianMember", listJumlahPembelianMember);
+        pasangan = pasangan.entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue,
+                        LinkedHashMap::new
+                ));
+        model.addAttribute("pair", pasangan);
         return "bonus-top-member";
     }
 }

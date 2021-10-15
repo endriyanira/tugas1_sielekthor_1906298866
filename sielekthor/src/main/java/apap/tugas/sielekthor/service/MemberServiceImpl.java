@@ -5,20 +5,13 @@ import apap.tugas.sielekthor.model.PembelianBarangModel;
 import apap.tugas.sielekthor.model.PembelianModel;
 import apap.tugas.sielekthor.repository.MemberDb;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
-
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.sql.Date;
-import java.sql.Timestamp;
 
 @Service
 @Transactional

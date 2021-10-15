@@ -4,7 +4,6 @@ import apap.tugas.sielekthor.model.BarangModel;
 import apap.tugas.sielekthor.model.TipeModel;
 import apap.tugas.sielekthor.service.BarangService;
 import apap.tugas.sielekthor.service.TipeService;
-import org.apache.tomcat.util.http.parser.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -105,8 +104,8 @@ public class BarangController {
         List<BarangModel> listBarangByTipeAndPembayaran = new ArrayList<>();
         model.addAttribute("listTipeService", listTipeService);
         model.addAttribute("listBarangByTipeAndPembayaran",listBarangByTipeAndPembayaran);
-        System.out.println(tipe);
-        model.addAttribute("tipe", tipe);
+        model.addAttribute("tp",tipe);
+        System.out.println(tipe.getNamaTipe());
         return "form-cari-barang";
     }
 
@@ -116,10 +115,26 @@ public class BarangController {
             @RequestParam(name = "stok") boolean stokBarang,
             Model model){
 
-        System.out.println("masuk sini");
+        int stok;
+        if(stokBarang){
+            stok = 1;
+        }
+        else{
+            stok = 0;
 
-        System.out.println(stokBarang);
+        }
+        String url = tipe+"/stok?stok="+stok;
+        return "redirect:"+url;
 
+    }
+
+    @GetMapping(value="/barang/{idTipe}/stok", params={"stok"})
+    public String cariBarangSubmit(
+            @PathVariable String idTipe,
+            @RequestParam(name = "stok") boolean stokBarang,
+            Model model){
+
+        Long tipe = Long.parseLong(idTipe);
         //Dapetin Tipe Model yang dimaksud
         TipeModel tipeModel = tipeService.getTipeByIdTipe(tipe);
 
@@ -135,10 +150,15 @@ public class BarangController {
         //Buat di taro di form caripembelian
         List<TipeModel> listTipeService= tipeService.getTipeList();
 
-        System.out.println(listBarangTipeStok);
-
+        model.addAttribute("stokBarang", stokBarang);
+        model.addAttribute("tipe", tipeService.getTipeByIdTipe(tipe).getNamaTipe());
         model.addAttribute("listTipeService", listTipeService);
         model.addAttribute("listBarangTipeStok",listBarangTipeStok);
+
+        model.addAttribute("tp", tipeModel);
+        model.addAttribute("stok", stokBarang);
+        model.addAttribute("lastselected", tipeModel.getId());
+
         return "form-cari-barang";
 
     }

@@ -19,20 +19,20 @@
                 <br>
                 <form th:action="@{/barang/}" method="GET">
                     Tipe<br>
-                        <select class="form-control" style="border-radius: 10px" id="idTipe" name="idTipe">
-                            <option th:each="tipe : ${listTipeService}"
-                                    th:value="${tipe.id}"
-                                    th:text="${tipe.namaTipe}"
-                                    th:seleced="${tipe.id}">
-                            </option>
-                        </select>
+                    <select class="form-control" style="border-radius: 10px" name="idTipe">
+                        <option th:each="tipe : ${listTipeService}"
+                                th:value="${tipe.id}"
+                                th:text="${tipe.namaTipe}"
+                                th:selected="${tipe.id eq lastselected}">
+                        </option>
+                    </select>
                     <br>
                     Stok<br>
                     <div class="radio">
-                        <label><input value = "1" type="radio" name="stok" checked> Available</label>
+                        <label><input th:checked="${stok == true}" value = "1" type="radio" name="stok"> Available</label>
                     </div>
                     <div class="radio">
-                        <label><input value = "0" type="radio" name="stok" checked> Sold Out</label>
+                        <label><input th:checked="${stok == false}" value = "0" type="radio" name="stok"> Sold Out</label>
                     </div>
                     <br>
                     <br>
@@ -46,42 +46,41 @@
     </div>
     <br>
     <br>
-    <div th:if="*{listBarangTipeStok != null}">
-        <div class="card-body">
-            <div class="row justify-content-start" style="padding-left:10px">
-                <table class="table table-striped">
-                    <thead class="bg-warning text-center" style="padding:15px">
-                    <th>No.</th>
-                    <th>Nama</th>
-                    <th>Harga</th>
-                    <th>Tipe</th>
-                    <th>Stok</th>
-                    <th>Aksi</th>
-                    </thead>
-                    <tbody>
-                    <tr th:each="barang, item: ${listBarangTipeStok}">
-                        <td th:text="${item.count}" class="text-center"></td>
-                        <td th:text="${barang.namaBarang}" class="text-center"></td>
-                        <td th:text="${barang.hargaBarang}" class="text-center"></td>
-                        <td th:text="${barang.tipe.namaTipe}" class="text-center"></td>
-                        <td th:text="${barang.stokBarang}" class="text-center"></td>
-                        <td class="text-center">
-                            <a class="btn btn-sm btn-info font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/} + ${barang.id}">Lihat</a>
-                            <a class="btn btn-sm btn-warning font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/ubah/} + ${barang.id}">Ubah</a>
-                            <a class="btn btn-sm btn-danger font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/hapus/}+ ${barang.id}">Hapus</a>
-
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+        <div th:if="*{listBarangTipeStok != null}">
+            <div th:if="*{listBarangTipeStok.size() == 0}">
+                <h2>Tidak ada barang dengan tipe <span class="text-bold" style="color: #f9a825"  th:text="${tipe}"></span> dengan stok yang <span class="text-bold" style="color: #f9a825"  th:text="${stok}"></span></h2>
+            </div>
+            <div class="card-body" th:if="*{listBarangTipeStok.size() != 0}">
+                <div class="row justify-content-start" style="padding-left:10px">
+                    <table class="table table-striped">
+                        <thead class="bg-warning text-center" style="padding:15px">
+                        <th>No.</th>
+                        <th>Nama</th>
+                        <th>Harga</th>
+                        <th>Tipe</th>
+                        <th>Stok</th>
+                        <th>Aksi</th>
+                        </thead>
+                        <tbody>
+                        <tr th:each="barang, item: ${listBarangTipeStok}">
+                            <td th:text="${item.count}" class="text-center"></td>
+                            <td th:text="${barang.namaBarang}" class="text-center"></td>
+                            <td th:text="${barang.hargaBarang}" class="text-center"></td>
+                            <td th:text="${barang.tipe.namaTipe}" class="text-center"></td>
+                            <td th:text="${barang.stokBarang}" class="text-center"></td>
+                            <td class="text-center">
+                                <a class="btn btn-sm btn-info font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/} + ${barang.id}">Lihat</a>
+                                <a class="btn btn-sm btn-warning font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/ubah/} + ${barang.id}">Ubah</a>
+                                <a class="btn btn-sm btn-danger font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/barang/hapus/}+ ${barang.id}">Hapus</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
     </div>
-    <div th:unless="*{listBarangTipeStok!= null}">
-        <br>
-    </div>
-
 </div>
 
 

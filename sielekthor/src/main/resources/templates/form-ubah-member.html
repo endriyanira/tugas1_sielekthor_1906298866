@@ -36,14 +36,12 @@
 
                             Jenis Kelamin : <br>
                             <div class="form-check">
-<!--                                <label><input class="form-check-input" th:if="*{jenisKelamin == 0}" value = "0" type="radio" name="jenisKelamin" checked disable> Perempuan</label>-->
                                 <input th:if="*{jenisKelamin == 0}" class="form-check-input" type="radio" name="jenisKelamin" id="flexRadioDisabled" checked disabled>
                                 <label class="form-check-label" for="flexRadioDisabled">
                                     Perempuan
                                 </label>
                             </div>
                             <div class="form-check">
-<!--                                <label><input class="form-check-input" th:if="*{jenisKelamin == 1}" value = "1" type="radio" name="jenisKelamin" checked disable> Laki-Laki</label>-->
                                 <input th:if="*{jenisKelamin == 1}" class="form-check-input" type="radio" name="jenisKelamin" id="flexRadioCheckedDisabled" checked disabled>
                                 <label class="form-check-label" for="flexRadioCheckedDisabled">
                                     Laki-laki

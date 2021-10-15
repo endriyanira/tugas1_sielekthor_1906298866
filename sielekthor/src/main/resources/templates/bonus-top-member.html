@@ -29,14 +29,14 @@
             <th>Jumlah Pembelian</th>
             </thead>
             <tbody>
-            <tr th:each="member, item: ${listMember}">
+            <tr th:each="instance, item: ${pair}">
                 <td th:text="${item.count}" class="text-center"></td>
-                <td th:text="${member.namaMember}" class="text-center"></td>
-                <td th:text="${member.tanggalLahir}" class="text-center"></td>
-                <td th:text="${member.tanggalPendaftaran}" class="text-center"></td>
-                <td class="text-center" th:if="${member.jenisKelamin} == 1">Laki-Laki</td>
-                <td class="text-center" th:if="${member.jenisKelamin} == 0">Perempuan</td>
-                <td th:text="${listJumlahPembelianMember[__${item.index}__]}" class="text-center"></td>
+                <td th:text="${instance.key.namaMember}" class="text-center"></td>
+                <td th:text="${instance.key.tanggalLahir}" class="text-center"></td>
+                <td th:text="${instance.key.tanggalPendaftaran}" class="text-center"></td>
+                <td class="text-center" th:if="${instance.key.jenisKelamin} == 1">Laki-Laki</td>
+                <td class="text-center" th:if="${instance.key.jenisKelamin} == 0">Perempuan</td>
+                <td th:text="${instance.value}" class="text-center"></td>
             </tr>
             </tbody>
         </table>

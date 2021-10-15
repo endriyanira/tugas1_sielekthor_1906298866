@@ -23,17 +23,17 @@
                         <option th:each="mb : ${listMemberService}"
                                 th:value="${mb.id}"
                                 th:text="${mb.namaMember}"
-                                th:seleced="${mb.id}">
+                                th:selected="${mb.id == lastMember}">
                         </option>
                     </select>
                     <br>
 
                     Pembayaran<br>
                     <div class="radio">
-                        <label><input value = "1" type="radio" name="tipePembayaran" checked> Tunai</label>
+                        <label><input th:checked="${tipePembayaran eq true}" value = "1" type="radio" name="tipePembayaran"> Tunai</label>
                     </div>
                     <div class="radio">
-                        <label><input value = "0" type="radio" name="tipePembayaran" checked> Cicil</label>
+                        <label><input th:checked="${tipePembayaran eq false}" value = "0" type="radio" name="tipePembayaran"> Cicil</label>
                     </div>
                     <br>
                     <br>
@@ -46,8 +46,11 @@
         </div>
         <br>
         <br>
-            <div th:if="*{listPembelianByMemberAndTipe.size() != 0}">
-                <div class="card-body">
+            <div th:if="*{listPembelianByMemberAndTipe != null}">
+                <div th:if="*{listPembelianByMemberAndTipe.size() == 0}">
+                    <h2>Tidak ada barang dengan pembelian  <span class="text-bold" style="color: #f9a825"></span> dengan stok yang <span class="text-bold" style="color: #f9a825"></span></h2>
+                </div>
+                <div class="card-body" th:if="*{listPembelianByMemberAndTipe.size() != 0}">
                     <div class="row justify-content-start" style="padding-left:10px">
                         <table class="table table-striped">
                             <thead class="bg-warning text-center" style="padding:15px">
@@ -76,14 +79,11 @@
                         </table>
                     </div>
                 </div>
-
-            </div>
-            <div th:unless="*{listPembelianByMemberAndTipe.size() != 0}">
-                <br>
             </div>
     </div>
 </div>
 
 
 </body>
+
 </html>

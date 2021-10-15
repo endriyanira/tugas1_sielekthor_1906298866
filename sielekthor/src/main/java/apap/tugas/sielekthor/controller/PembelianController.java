@@ -1,6 +1,5 @@
 package apap.tugas.sielekthor.controller;
 
-import apap.tugas.sielekthor.model.BarangModel;
 import apap.tugas.sielekthor.model.MemberModel;
 import apap.tugas.sielekthor.model.PembelianBarangModel;
 import apap.tugas.sielekthor.model.PembelianModel;
@@ -8,21 +7,13 @@ import apap.tugas.sielekthor.service.MemberService;
 import apap.tugas.sielekthor.service.PembelianService;
 import apap.tugas.sielekthor.service.BarangService;
 import apap.tugas.sielekthor.service.PembelianBarangService;
-import org.apache.tomcat.websocket.PerMessageDeflate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 
 @Controller
 public class PembelianController {
@@ -41,26 +32,18 @@ public class PembelianController {
 
     @GetMapping("/pembelian")
     public String listPembelian(
-            @ModelAttribute PembelianModel pembelian,
             Model model){
 
-
-        // kirim listPembelian (panjangnya) setiap member ke viewall-pembelian
-        model.addAttribute("listPembelian", pembelianService.getPembelianList());
-
         List<Integer> listTotalJumlah = new ArrayList<>();
+
         //for loop isi listPembelian Service
         for (PembelianModel p : pembelianService.getPembelianList()){
             Integer totalJumlahPerPembelian = pembelianService.getJumlahTotal(p);
                 listTotalJumlah.add(totalJumlahPerPembelian);
         }
-        System.out.println(listTotalJumlah);
-
-        DateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
-        String dateString = dateFormat.format(new Date());
-        model.addAttribute("myDate", dateString);
+        // kirim listTotalJumlahBarang tiap Pembelian
         model.addAttribute("listTotalJumlah", listTotalJumlah);
-
+        model.addAttribute("listPembelian", pembelianService.getPembelianList());
         return "viewall-pembelian";
     }
     @GetMapping("pembelian/{idPembelian}")
@@ -77,7 +60,7 @@ public class PembelianController {
         return "view-pembelian";
     }
 
-    @GetMapping("pembelian/hapus/{idPembelian}")
+    @PostMapping("pembelian/hapus/{idPembelian}")
     public String hapusPembelian(
         @PathVariable Long idPembelian,
         Model model
@@ -112,10 +95,8 @@ public class PembelianController {
 
     ){
         List<MemberModel> listMember = memberService.getMemberList();
-        List<PembelianModel> listPembelianByMemberAndTipe = new ArrayList<>();
 
         model.addAttribute("listMemberService",listMember);
-        model.addAttribute("listPembelianByMemberAndTipe", listPembelianByMemberAndTipe);
         model.addAttribute("submenu", "Cari Pembelian Berdasarkan Member/Tipe Pembayaran");
         return "form-cari-pembelian-by-member-and-tipe";
     }
@@ -144,6 +125,7 @@ public class PembelianController {
         List<Integer> listTotalJumlah = new ArrayList<>();
         //for loop isi listPembelian Service
         for (PembelianModel p : listPembelianByMemberAndTipe){
+            // Dapetin jumlahtotalnominalharga barang tiap pembelian
             Integer totalJumlahPerPembelian = pembelianService.getJumlahTotal(p);
             listTotalJumlah.add(totalJumlahPerPembelian);
         }
@@ -151,6 +133,9 @@ public class PembelianController {
         model.addAttribute("listPembelianByMemberAndTipe", listPembelianByMemberAndTipe);
         model.addAttribute("listMemberService",listMember);
         model.addAttribute("listTotalJumlah", listTotalJumlah);
+        System.out.println(idMember);
+        model.addAttribute("lastMember", idMember);
+        model.addAttribute("tipePembayaran", tipePembayaran);
 
         return "form-cari-pembelian-by-member-and-tipe";
 

@@ -20,7 +20,7 @@
                 <form th:action="@{/pembelian/tambah}" th:object="${pembelian}" method="POST">
 
                     Nama Admin <br>
-                    <input required class="form-control" style="border-radius: 10px" type="text" name="namaAdmin" th:value="*{namaAdmin}" />
+                    <input required class="form-control" style="border-radius: 10px" type="text" name="namaAdmin" th:value="*{namaAdmin}" th:field="*{namaAdmin}" />
                     <br><br>
 
                     Pembeli<br>
@@ -36,10 +36,10 @@
 
                     Metode Pembayaran :
                     <div class="radio">
-                        <label><input value = "1" type="radio" name="isCash" checked> Tunai</label>
+                        <label><input th:field="*{isCash}" value = "1" type="radio" name="isCash" checked> Tunai</label>
                     </div>
                     <div class="radio">
-                        <label><input value = "0" type="radio" name="isCash" checked> Cicil</label>
+                        <label><input th:field="*{isCash}" value = "0" type="radio" name="isCash" checked> Cicil</label>
                     </div>
                     <br>
 

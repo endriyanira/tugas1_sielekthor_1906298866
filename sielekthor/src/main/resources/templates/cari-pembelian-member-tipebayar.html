@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <title>Sielekthor</title>
+    <meta charset="UTF-8">
+    <title> Home </title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar('')"></nav>
+<div class="container">
+    <div class="card m-4 p-4 border-0">
+        <div class="card-body border-bottom">
+            <div class="justify-content-center">
+                <h2 class="text-center">Cari Pembelian</h2>
+                <br>
+                <form th:action="@{/cari/pembelian}" method="GET">
+                    Member<br>
+                    <select class="form-control" style="border-radius: 10px" id="idMember" name="idMember">
+                        <option th:each="mb : ${listMemberService}"
+                                th:value="${mb.id}"
+                                th:text="${mb.namaMember}"
+                                th:seleced="${mb.id}">
+                        </option>
+                    </select>
+                    <br>
+
+                    Pembayaran<br>
+                    <div class="radio">
+                        <label><input th:field="${tipePembayaran}" value = "1" type="radio" name="tipePembayaran" checked> Tunai</label>
+                    </div>
+                    <div class="radio">
+                        <label><input th:field="${tipePembayaran}" value = "0" type="radio" name="tipePembayaran" checked> Cicil</label>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row justify-content-center" style="padding:10px">
+                        <button class="col btn btn-warning border-0" style="border-radius:10px; padding-left:25px; padding-right:25px; margin-left:50px;margin-right:25px">Cari</button>
+                        <button class="col btn btn-outline-warning text-bold-warning" style="border-radius:10px; padding-left:25px; padding-right:25x; margin-left:25px;margin-right:50px" href="/pembelian">Kembali</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div th:if="*{listPembelianByMemberAndTipe.size() != 0}">
+            <div class="card-body">
+                <div class="row justify-content-start" style="padding-left:10px">
+                    <table class="table table-striped">
+                        <thead class="bg-warning text-center" style="padding:15px">
+                        <th>No.</th>
+                        <th>No Invoice</th>
+                        <th>Total Harga</th>
+                        <th>Member</th>
+                        <th>Jumlah Barang</th>
+                        <th>Tanggal Pembelian</th>
+                        <th>Aksi</th>
+                        </thead>
+                        <tbody>
+                        <tr th:each="pembelian, item: ${listPembelianByMemberAndTipe}">
+                            <td th:text="${item.count}" class="text-center"></td>
+                            <td th:text="${pembelian.noInvoice}" class="text-center"></td>
+                            <td th:text="${pembelian.total}" class="text-center"></td>
+                            <td th:text="${pembelian.member.namaMember}" class="text-center"></td>
+                            <td th:text="${listTotalJumlah[__${item.index}__]}" class="text-center"></td>
+                            <td th:text="${pembelian.tanggalPembelian}" class="text-center"></td>
+                            <td class="text-center">
+                                <a class="btn btn-sm btn-info font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/pembelian/} + ${pembelian.id}">Lihat</a>
+                                <a class="btn btn-sm btn-danger font-weight-bold text-dark" style="border-radius:5px;" th:href="@{/pembelian/hapus/} + ${pembelian.id}">Hapus</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div th:unless="*{listPembelianByMemberAndTipe.size() != 0}">
+            <br>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -73,30 +73,18 @@ public class BarangServiceImpl implements BarangService{
         //temporary list
         List<BarangModel> listBarangbyTipeStok = new ArrayList<>();
 
-
-//        boolean avai = true;
-//        if(stokBarang==true){
-//            avai = true;
-//        }
-//        else{
-//            avai = false;
-//        }
-
-        //looping semua barang di listBarang yg udh di filter tipenya
         for (BarangModel br : listBarangbyTipe){
-            System.out.println(br.getNamaBarang() + " stoknya" + br.getStokBarang());
-            //cek kalo stok barangnya ada dan avai dari param true (1)
+            //cek kalo stok barangnya ada dan stok dari param true (1)
             if(br.getStokBarang() > 0 && stokBarang==true){
-
 
                 //tambahin modelBarang ke temporary listBarangbyTipeStok
                 listBarangbyTipeStok.add(br);
             }
+
+            //cek kalo stok barangnya null dan sama kayak param stok false (0)
             if(br.getStokBarang() == 0 && stokBarang == false){
-                System.out.println("masuk yang kosong");
                 listBarangbyTipeStok.add(br);
             }
-
         }
         return listBarangbyTipeStok;
     }
