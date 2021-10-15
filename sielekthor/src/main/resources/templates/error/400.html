@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <title>Sielekthor</title>
+  <meta charset="UTF-8">
+  <title> Home </title>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar('')"></nav>
+<div class="container-fluid">
+  <h2>400 Bad Request</h2>
+  <a th:href="@{/}">Kembali ke home</a>
+</div>
+</body>
+</html>

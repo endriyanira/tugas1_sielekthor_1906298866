@@ -42,24 +42,11 @@ public class BarangController {
     public String addBarangSubmit(
             @ModelAttribute BarangModel barang,
             Model model) {
-        System.out.println(barang.getTipe());
-        System.out.println(barang.getNamaBarang());
+
         barangService.addBarang(barang);
 
         model.addAttribute("kodeBarang", barang.getKodeBarang());
         return "add-barang";
-    }
-
-    @GetMapping("/barang/hapus/{idBarang}")
-    public String ubahBarang(
-            @PathVariable (value="idBarang") Long idBarang,
-            Model model
-    ){
-        BarangModel barang = barangService.getBarangByIdBarang(idBarang);
-        barangService.deleteBarang(idBarang);
-        model.addAttribute("kodeBarang", barang.getKodeBarang());
-        return "hapus-barang";
-
     }
 
     @GetMapping("barang/{idBarang}")
@@ -105,7 +92,7 @@ public class BarangController {
         model.addAttribute("listTipeService", listTipeService);
         model.addAttribute("listBarangByTipeAndPembayaran",listBarangByTipeAndPembayaran);
         model.addAttribute("tp",tipe);
-        System.out.println(tipe.getNamaTipe());
+
         return "form-cari-barang";
     }
 
@@ -149,13 +136,21 @@ public class BarangController {
 
         //Buat di taro di form caripembelian
         List<TipeModel> listTipeService= tipeService.getTipeList();
-
-        model.addAttribute("stokBarang", stokBarang);
+        String availability;
+        if(stokBarang){
+            availability = "tersedia";
+        }
+        else{
+            availability = "kosong";
+        }
         model.addAttribute("tipe", tipeService.getTipeByIdTipe(tipe).getNamaTipe());
         model.addAttribute("listTipeService", listTipeService);
         model.addAttribute("listBarangTipeStok",listBarangTipeStok);
 
-        model.addAttribute("tp", tipeModel);
+        //kirim untuk keterangan stok
+        model.addAttribute("stringStok", availability);
+
+        //stay with last selected dropdown and radio button
         model.addAttribute("stok", stokBarang);
         model.addAttribute("lastselected", tipeModel.getId());
 

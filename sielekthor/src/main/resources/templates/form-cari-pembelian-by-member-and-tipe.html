@@ -48,7 +48,7 @@
         <br>
             <div th:if="*{listPembelianByMemberAndTipe != null}">
                 <div th:if="*{listPembelianByMemberAndTipe.size() == 0}">
-                    <h2>Tidak ada barang dengan pembelian  <span class="text-bold" style="color: #f9a825"></span> dengan stok yang <span class="text-bold" style="color: #f9a825"></span></h2>
+                    <h2>Tidak ada pembelian atas nama <span class="text-bold" style="color: #f9a825" th:text="${namaMember}"></span> dengan jenis pembayaran <span class="text-bold" style="color: #f9a825" th:text="${jenisPembayaran}">.</span></h2>
                 </div>
                 <div class="card-body" th:if="*{listPembelianByMemberAndTipe.size() != 0}">
                     <div class="row justify-content-start" style="padding-left:10px">

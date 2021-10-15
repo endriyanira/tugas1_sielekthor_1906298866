@@ -29,10 +29,10 @@
                     <br>
                     Stok<br>
                     <div class="radio">
-                        <label><input th:checked="${stok == true}" value = "1" type="radio" name="stok"> Available</label>
+                        <label><input th:checked="${stok eq true}" value = "1" type="radio" name="stok"> Available</label>
                     </div>
                     <div class="radio">
-                        <label><input th:checked="${stok == false}" value = "0" type="radio" name="stok"> Sold Out</label>
+                        <label><input th:checked="${stok eq false}" value = "0" type="radio" name="stok"> Sold Out</label>
                     </div>
                     <br>
                     <br>
@@ -48,7 +48,7 @@
     <br>
         <div th:if="*{listBarangTipeStok != null}">
             <div th:if="*{listBarangTipeStok.size() == 0}">
-                <h2>Tidak ada barang dengan tipe <span class="text-bold" style="color: #f9a825"  th:text="${tipe}"></span> dengan stok yang <span class="text-bold" style="color: #f9a825"  th:text="${stok}"></span></h2>
+                <h2>Tidak ada barang dengan tipe <span class="text-bold" style="color: #f9a825"  th:text="${tipe}"></span> dengan stok yang <span class="text-bold" style="color: #f9a825"  th:text="${stringStok}"></span></h2>
             </div>
             <div class="card-body" th:if="*{listBarangTipeStok.size() != 0}">
                 <div class="row justify-content-start" style="padding-left:10px">

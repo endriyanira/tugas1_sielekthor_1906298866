@@ -16,18 +16,19 @@
         <div class="card-body">
             <div class="justify-content-center">
                 <div th:if="${listInvoice!=null}">
-                    <h2>Member dengan nama <span class="text-bold" style="color: #f9a825"  th:text="${namaMember}"></span> berhasil diubah, dan
-                        nomor invoice menjadi : </h2>
-                    <br>
+                    <div th:if="${listInvoice.size() != 0}">
+                        <h2>Member dengan nama <span class="text-bold" style="color: #f9a825"  th:text="${namaMember}"></span> berhasil diubah, dan
+                            nomor invoice menjadi : </h2>
+                        <br>
+                    </div>
                     <div th:each="pb, iterationStatus : ${listInvoice}">
                         <h2><span class="text-bold" style="color: #f9a825"  th:text="${pb.noInvoice}"></span></h2>
                         <br>
                     </div>
 
                 </div>
-                <div th:unless="${listInvoice != null}">
-                    <h2>Member dengan nama <span class="text-bold" style="color: #f9a825"  th:text="${namaMember}"></span> berhasil diubah.</h2>
-
+                <div>
+                    <h2 th:if="${listInvoice.size() == 0}">Member dengan nama <span class="text-bold" style="color: #f9a825"  th:text="${namaMember}"></span> berhasil diubah.</h2>
                 </div>
                 <a class="btn btn-outline-warning text-warning" href="/member">Kembali</a>
             </div>

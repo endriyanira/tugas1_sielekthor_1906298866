@@ -102,26 +102,28 @@ public class PembelianController {
     }
 
 
-    @RequestMapping(path="/cari/pembelian", params={"idMember", "tipePembayaran"}, method = RequestMethod.GET)
+    @GetMapping(path="/cari/pembelian", params={"idMember", "tipePembayaran"})
     public String getPembelianbyMemberAndTipeBayar(
             @RequestParam(value="idMember") Long idMember,
             @RequestParam(value = "tipePembayaran") boolean tipePembayaran,
             Model model
     ){
-        //ambil semua member
+
+        MemberModel member = memberService.getMemberByIdMember(idMember);
         List<MemberModel> listMember = memberService.getMemberList();
 
-        //ambil listpembelian
-        List<PembelianModel> listPembelian = pembelianService.getPembelianList();
+        //ambil listpembelian dari member yang udah dipilih
+        List<PembelianModel> listPembelian = member.getListPembelian();
 
         List<PembelianModel> listPembelianByMemberAndTipe = new ArrayList<>();
-        List<PembelianModel> listAllMember = new ArrayList<>();
 
         for(PembelianModel p : listPembelian){
-            if(p.getIsCash() == tipePembayaran && p.getMember().getId().equals(idMember)){
+            if(p.getIsCash() == tipePembayaran){
+                //isi ke listyangbakalan di kirim ke html
                 listPembelianByMemberAndTipe.add(p);
             }
         }
+
         List<Integer> listTotalJumlah = new ArrayList<>();
         //for loop isi listPembelian Service
         for (PembelianModel p : listPembelianByMemberAndTipe){
@@ -130,12 +132,22 @@ public class PembelianController {
             listTotalJumlah.add(totalJumlahPerPembelian);
         }
 
+        String jenisPembayaran;
+        if(tipePembayaran){
+            jenisPembayaran = "Tunai";
+        }
+        else{
+            jenisPembayaran= "Cicilan";
+        }
+
         model.addAttribute("listPembelianByMemberAndTipe", listPembelianByMemberAndTipe);
         model.addAttribute("listMemberService",listMember);
         model.addAttribute("listTotalJumlah", listTotalJumlah);
-        System.out.println(idMember);
+//        System.out.println(idMember);
         model.addAttribute("lastMember", idMember);
         model.addAttribute("tipePembayaran", tipePembayaran);
+        model.addAttribute("jenisPembayaran", jenisPembayaran );
+        model.addAttribute("namaMember", memberService.getMemberByIdMember(idMember).getNamaMember());
 
         return "form-cari-pembelian-by-member-and-tipe";
 
